@@ -1,6 +1,5 @@
 import React from 'react'
-import {View, TextInput} from 'react-native'
-import {Button} from "react-native-web";
+import {View, TextInput, Button} from 'react-native'
 
 export class JoinRoom extends React.Component {
     constructor(props) {
@@ -28,9 +27,12 @@ export class JoinRoom extends React.Component {
                     style={this.props.style}
                     placeholder="Room Code"
                     onSubmitEditing={this.submit}
+                    autoCapitalize={"none"}
+                    autoCompleteType={"off"}
+                    autoCorrect={false}
                 />
                 <Button
-                    title={"Submit"}
+                    title={"Join Room"}
                     onPress={this.submit}
                 />
             </View>

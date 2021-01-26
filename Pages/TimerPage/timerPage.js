@@ -1,7 +1,7 @@
 // this is the file that runs the timer and the next speech button
 import React from 'react'
-import {Timer} from '../components/Timer'
-import {Next} from "../components/nextSpeechButton";
+import {Timer} from './components/Timer'
+import {Next} from "./components/NextSpeechButton";
 import {View, Text} from "react-native";
 
 export class TimerPage extends React.Component {
@@ -13,10 +13,12 @@ export class TimerPage extends React.Component {
             speechTime: 0,
             speechName: this.props.times[0][0]
         }
-        // this.time = React.createRef();
+        this.time = React.createRef();
     }
 
     nextSpeech = () => {
+        if (this.props.times.length === this.state.speechNum + 1)
+            return;
         const message = {
             room: this.props.room,
             newSpeech: this.state.speechNum + 1,
@@ -26,7 +28,7 @@ export class TimerPage extends React.Component {
         this.props.socket.emit('next', message);
     }
 
-    componentDidMount() { //TODO: get the app to work properly on phone
+    componentDidMount() {
         this.props.socket.on("next", (msg) => {
             this.setState({
                 speechNum: msg.newSpeech,
@@ -34,10 +36,16 @@ export class TimerPage extends React.Component {
                 speechName: msg.newSpeechName,
             })
         })
+        this.props.socket.on("new connection", () => {
+            const message = {
+                endTime: this.ref.current.state.endTime,
+                room: this.props.room,
+            }
+            this.props.socket.emit("end time", message)
+        })
     }
 
     render() {
-        // console.log(this.time.state)
         if (this.props.isHost === true) { // if you are the host, then you see the next speech button
             console.log(this.state.speechNum)
             return (

@@ -1,14 +1,16 @@
 import React from 'react';
 import { View } from 'react-native';
-import {TimerPage} from './pages/timerPage'
-import {StartScreen} from "./pages/startScreen";
-import {startStyles, styles, timerStyles} from './styles'
-import {loadAsync} from "expo-font";
+import {TimerPage} from './Pages/TimerPage/timerPage'
+import {StartScreen} from "./Pages/StartScreen/startScreen";
+import {styles} from './styles'
+import * as Font from 'expo-font';
 import io from "socket.io-client";
 import {registerRootComponent} from "expo";
+import {timerStyles} from "./Pages/TimerPage/styles";
+import {startStyles} from "./Pages/StartScreen/styles";
 
 
-class App extends React.Component {
+export default class App extends React.Component {
 
   constructor(props) {
     super(props);
@@ -17,20 +19,37 @@ class App extends React.Component {
       host: true,
       room: "",
       inRoom: false,
+      fontsLoaded: false,
+      format: '',
+      times: [],
+      timesLoaded: false,
     }
+    this._isMounted = false;
   }
 
-  async componentDidMount() {
-    try {
-      console.log("loading the font");
-      await loadAsync({
-        RobotoMono: require('./assets/fonts/RobotoMono/RobotoMono-VariableFont_wght.ttf'),
-        Righteous: require('./assets/fonts/Righteous/Righteous-Regular.ttf'),
-      }); // loads the font
-    } catch {
-      console.log("font didn't load")
-    } // in case the font doesn't work
-    this.socket = io("https://debate-app-server.herokuapp.com/");
+
+  async loadFonts() {
+    await Font.loadAsync({
+      'RobotoMono': {
+        uri: require('./assets/fonts/RobotoMono/RobotoMono-VariableFont_wght.ttf'),
+        fontDisplay: Font.FontDisplay.FALLBACK,
+      },
+      'Righteous': {
+        uri: require('./assets/fonts/Righteous/Righteous-Regular.ttf'),
+        fontDisplay: Font.FontDisplay.FALLBACK,
+      }
+    })
+    this._isMounted && this.setState({
+      fontsLoaded: true,
+    })
+    return true;
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+    this._isMounted && this.loadFonts()
+    // noinspection JSValidateTypes
+    this.socket = io("ws://debate-app-server.herokuapp.com/");
     this.socket.on('connect', () => {
       console.log("socket connected");
     })
@@ -44,26 +63,47 @@ class App extends React.Component {
     this.socket.emit("room", roomCode);
   }
 
+  setFormat = (newFormat) => {
+    fetch(`https://debate-app-server.herokuapp.com/times/${newFormat[1].toLowerCase()}`)
+        .then(json => json.json())
+        .then(newTimes => {
+          this.setState({
+            times: newTimes.times,
+            timesLoaded: true,
+          })
+        })
+    // times = newTimes;
+  }
+
   render() {
-    if (!this.state.inRoom) { // if you aren't yet in the room
-      return (
-          <View style={styles.container}>
-            <StartScreen style={startStyles} setRoom={this.joinRoom} socket={this.socket}/>
-          </View>
-      )
+    if (this.state.fontsLoaded) {
+      if (!this.state.inRoom) { // if you aren't yet in the room
+        return (
+            <View style={styles.container}>
+              <StartScreen style={startStyles} setRoom={this.joinRoom} socket={this.socket} setTimes={this.setFormat}/>
+            </View>
+        )
+      } else {
+        if (!this.state.timesLoaded)
+          return null;
+        else {
+          return (
+              <View style={styles.container}>
+                <TimerPage times={this.state.times} style={timerStyles} isHost={this.state.host} room={this.state.room}
+                           socket={this.socket}/>
+              </View>
+          )
+        }
+      }
     } else {
-      return (
-          <View style={styles.container}>
-            <TimerPage times = {times[0]} style={timerStyles} isHost={this.state.host} room={this.state.room} socket={this.socket}/>
-          </View>
-      )
+      return null;
     }
   }
 }
 
 registerRootComponent(App);
 
-const times = [
+let times = [
   [ // CDA times
     ["A1C", 6],["A1 CX", 3], ["N1C", 6],["N1 CX", 3], ["A2C", 6],["A2 CX", 3], ["N2C", 6],["N2 CX", 3],
     ["N1R", 4], ["A1R", 4], ["N2R", 4], ["A2R", 4]

@@ -10,9 +10,7 @@ export class Next extends React.Component {
         return(
             <View>
                 <Button
-                    onPress={() => {
-                        this.props.nextSpeech();
-                    }} // when clicked, move to the next speech
+                    onPress={this.props.nextSpeech} // when clicked, move to the next speech
                     title="Next Speech"
                     style={this.props.style.nextSpeechButton}
                 />
