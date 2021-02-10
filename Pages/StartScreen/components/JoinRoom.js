@@ -1,5 +1,7 @@
 import React from 'react'
 import {View, TextInput, Button} from 'react-native'
+import {startStyles} from "../styles";
+import {Separator} from "./Separator";
 
 export class JoinRoom extends React.Component {
     constructor(props) {
@@ -15,8 +17,13 @@ export class JoinRoom extends React.Component {
         })
     }
 
-    submit = () => {
-        this.props.submit(this.state.text);
+    join = () => {
+        this.props.submit(this.state.text, false);
+    }
+
+    create = () => {
+        this.props.submit(this.state.text, true);
+        this.props.socket.emit("create room", null);
     }
 
     render() {
@@ -24,7 +31,7 @@ export class JoinRoom extends React.Component {
             <View>
                 <TextInput
                     onChangeText={this.textChange}
-                    style={this.props.style}
+                    style={startStyles.roomInput}
                     placeholder="Room Code"
                     onSubmitEditing={this.submit}
                     autoCapitalize={"none"}
@@ -33,7 +40,14 @@ export class JoinRoom extends React.Component {
                 />
                 <Button
                     title={"Join Room"}
-                    onPress={this.submit}
+                    onPress={this.join}
+                    style={startStyles.submitButton}
+                />
+                <Separator />
+                <Button
+                    title={"Create Room"}
+                    onPress={this.create}
+                    style={startStyles.submitButton}
                 />
             </View>
         )

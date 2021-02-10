@@ -1,5 +1,6 @@
 import React from 'react'
 import {Picker} from '@react-native-picker/picker'
+import {startStyles} from "../styles";
 
 export class ChooseFormat extends React.Component {
     constructor(props) {
@@ -17,6 +18,10 @@ export class ChooseFormat extends React.Component {
                 formats: this.props.formats,
             })
         } catch (e) {
+            this.setState({
+                selectedFormat: ["loading", "load"],
+                formats: ["loading", "load"]
+            })
         }
     }
 
@@ -24,7 +29,7 @@ export class ChooseFormat extends React.Component {
         console.log(format, i);
         this.props.changeFormat(this.props.formats[i]);
         this.setState({
-            selectedFormat: format[1],
+            selectedFormat: format,
         })
     }
 
@@ -33,9 +38,9 @@ export class ChooseFormat extends React.Component {
             return null;
         } else {
             return (
-                <Picker
+                <Picker //TODO: make the dropdown change on ios
                     selectedValue={this.state.selectedFormat[1]}
-                    style={{height: 50, width: 300}}
+                    style={startStyles.dropdown}
                     onValueChange={this.changeSelected}
                 >
                     {this.props.formats.map((format, i) => {

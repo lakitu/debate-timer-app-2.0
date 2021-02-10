@@ -1,4 +1,3 @@
-// Use React CS50 lecture to make timer
 import {Text, View} from 'react-native'
 import React from 'react'
 
@@ -70,7 +69,7 @@ export class Timer extends React.Component{
 
     render() {
         return(
-            <View style={this.props.styles.container}>
+            <View>
                 <Text style={[this.props.styles.count,
                     (this.state.finished ? (this.state.flash ? this.props.styles.finishedRed: this.props.styles.finishedBlack)
                         : this.props.styles.continuing),

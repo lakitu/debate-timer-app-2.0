@@ -1,12 +1,11 @@
 import React from 'react';
 import {View, Text} from 'react-native'
 import {JoinRoom} from "./components/JoinRoom";
-import {Separator} from './components/Separator'
-import {CreateRoom} from "./components/CreateRoom"
 import {ChooseFormat} from "./components/ChooseFormat";
+import {startStyles} from "./styles";
 
 
-export class StartScreen extends React.Component {
+export class StartScreen extends React.Component  {
     constructor(props) {
         super(props)
         this.state = {
@@ -24,8 +23,8 @@ export class StartScreen extends React.Component {
                     formats: json.formats,
                     formatsLoaded: true,
                     selectedFormat: json.formats[0],
-                }, () => console.log(this.state.selectedFormat))
-            })
+                });
+            });
     }
 
     changeSelectedFormat = (format) => {
@@ -34,20 +33,15 @@ export class StartScreen extends React.Component {
         })
     }
 
-    submit = (roomCode) => {
-        this.props.setRoom(roomCode);
+    joinRoom = (roomCode, isHost) => { // passed to joinRoom
+        this.props.setRoom(roomCode, isHost);
         this.props.setTimes(this.state.selectedFormat);
-    }
-
-    setTimes = () => {
-        this.props.setRoom(
-            this.state.selectedFormat
-        )
+        // this.props.setHost(false);
     }
 
     renderDropdown() {
         if (this.state.formatsLoaded)
-            return (<ChooseFormat formats={this.state.formats} changeFormat={this.changeSelectedFormat}/>)
+            return <ChooseFormat formats={this.state.formats} changeFormat={this.changeSelectedFormat} style={startStyles.dropdown}/>
         else
             return null;
     }
@@ -56,19 +50,13 @@ export class StartScreen extends React.Component {
         let dropdown = this.renderDropdown();
 
         return (
-            <View>
-                <View>
-                    <Text style={this.props.style.title}>Live Debate Timer!</Text>
-                    <JoinRoom
-                        style={this.props.style.roomInput}
-                        submit={this.submit}
-                    />
-                </View>
-                <Separator />
-                <View>
-                    <CreateRoom submit={this.setTimes}/>
-                    {dropdown}
-                </View>
+            <View style={startStyles.container}>
+                <Text style={startStyles.title}>Live Debate Timer!</Text>
+                <JoinRoom
+                    submit={this.joinRoom}
+                    socket={this.props.socket}
+                />
+                {dropdown}
             </View>
         )
     }
