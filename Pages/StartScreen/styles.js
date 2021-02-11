@@ -15,6 +15,7 @@ export const startStyles = StyleSheet.create({
     roomInput: {
         borderColor: "black",
         borderWidth: 1,
+        width: 350,
         height: 40,
         backgroundColor: "gainsboro",
         padding: 5,
@@ -23,10 +24,13 @@ export const startStyles = StyleSheet.create({
     submitButton: {
     },
     separator: {
-        marginVertical: 8,
+        marginVertical: 12,
         borderBottomColor: '#737373',
         borderBottomWidth: StyleSheet.hairlineWidth,
     },
     dropdown: {
+        margin: 5,
+        width: 350,
+        height: 50,
     }
 })

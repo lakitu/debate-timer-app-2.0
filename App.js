@@ -73,7 +73,8 @@ export default class App extends React.Component {
   }
 
   setFormat = (newFormat) => {
-    fetch(`https://debate-app-server.herokuapp.com/times/${newFormat[1].toLowerCase()}`)
+    console.log(newFormat);
+    fetch(`https://debate-app-server.herokuapp.com/times/${newFormat.toLowerCase()}`)
         .then(json => json.json())
         .then(newTimes => {
           this.setState({
@@ -81,13 +82,6 @@ export default class App extends React.Component {
             timesLoaded: true,
           })
         })
-    // times = newTimes;
-  }
-
-  setHost = (isHost) => {
-    this.setState({
-      host: isHost,
-    })
   }
 
   render() {

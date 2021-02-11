@@ -22,7 +22,7 @@ export class StartScreen extends React.Component  {
                 this.setState({
                     formats: json.formats,
                     formatsLoaded: true,
-                    selectedFormat: json.formats[0],
+                    selectedFormat: json.formats[0][1], // picks the identifier of the first format
                 });
             });
     }

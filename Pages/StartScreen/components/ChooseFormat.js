@@ -1,53 +1,63 @@
-import React from 'react'
-import {Picker} from 'react-native'
+import React, {useState} from 'react'
+import {Picker, View} from 'react-native'
 import {startStyles} from "../styles";
 
-export class ChooseFormat extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            selectedFormat: null,
-            formats: this.props.formats
-        }
+export function ChooseFormat (props) {
+    const [selectedValue, setSelectedValue] = useState("loading");
+
+    const changeValue = (itemValue) => {
+        console.log(itemValue);
+        setSelectedValue(itemValue);
+        props.changeFormat(itemValue);
     }
 
-    componentDidMount() {
-        try {
-            this.setState({
-                selectedFormat: this.props.formats[0],
-                formats: this.props.formats,
-            });
-        } catch (e) {
-            this.setState({
-                selectedFormat: ["loading", "load"],
-                formats: ["loading", "load"]
-            })
-        }
-    }
-
-    changeSelected = (format, i) => {
-        console.log(format, i);
-        this.props.changeFormat(this.props.formats[i]);
-        this.setState({
-            selectedFormat: format,
-        })
-    }
-
-    render() {
-        if (this.state.selectedFormat !== null) {
-            return (
-                <Picker //TODO: make the dropdown change on ios
-                    selectedValue={this.state.selectedFormat[1]}
-                    style={startStyles.dropdown}
-                    onValueChange={this.changeSelected}
-                >
-                    {this.props.formats.map((format, i) => {
-                        console.log(format, i);
-                        return (<Picker.Item label={format[0]} value={format[1]} key={i}/>)
-                    })}
-                </Picker>
-            )
-        }
-        return null;
-    }
+    return (
+        <View>
+            <Picker
+                selectedValue={selectedValue}
+                style={startStyles.dropdown}
+                onValueChange={changeValue}
+            >
+                {props.formats.map((format, i) => {
+                    return <Picker.Item label={format[0]} value={format[1]} key={i}/>
+                })}
+            </Picker>
+        </View>
+    )
 }
+
+// import React, { useState } from "react";
+// import { View, Picker, StyleSheet } from "react-native";
+//
+// export const ChooseFormat = (props) => {
+//     const [selectedValue, setSelectedValue] = useState(props.formats[0][1]);
+//
+//     const changeValue = (itemValue) => {
+//         setSelectedValue(itemValue);
+//         props.changeFormat(itemValue);
+//     }
+//
+//     return (
+//         <View style={styles.container}>
+//             <Picker
+//                 selectedValue={selectedValue}
+//                 style={{ height: 50, width: 150 }}
+//                 onValueChange={changeValue}
+//             >
+//                 {props.formats.map((format, i) => {
+//                     return <Picker.Item label={format[0]} value={format[1]} key={i}/>
+//                 })}
+//                 {/*<Picker.Item label="Java" value="java" />*/}
+//                 {/*<Picker.Item label="JavaScript" value="js" />*/}
+//             </Picker>
+//         </View>
+//     );
+// }
+//
+// const styles = StyleSheet.create({
+//     container: {
+//         flex: 1,
+//         paddingTop: 40,
+//         // alignItems: "center"
+//     }
+// });
