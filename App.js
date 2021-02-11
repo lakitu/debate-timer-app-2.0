@@ -65,7 +65,11 @@ export default class App extends React.Component {
       inRoom: true,
       host: isHost,
     })
-    !isHost && this.socket.emit("join", roomCode);
+    if (!isHost) {
+      this.socket.emit("join", roomCode);
+    }
+    this.socket.on("joined", () => {
+    })
   }
 
   setFormat = (newFormat) => {

@@ -15,7 +15,6 @@ export class TimerPage extends React.Component {
             speechTime: 0,
             speechName: this.props.times[0][0]
         }
-        this.time = React.createRef();
     }
 
     nextSpeech = () => {
@@ -38,13 +37,6 @@ export class TimerPage extends React.Component {
                 speechName: msg.newSpeechName,
             });
         })
-        this.props.socket.on("new connection", () => {
-            const message = {
-                endTime: this.ref.current.state.endTime,
-                room: this.props.room,
-            }
-            this.props.socket.emit("end time", message);
-        });
     }
 
     render() {
@@ -57,7 +49,10 @@ export class TimerPage extends React.Component {
                 </View>
                 <View style={timerStyles.container}>
                     <Text style={timerStyles.speechName}>{this.state.speechName}</Text>
-                    <Timer time={this.props.times[this.state.speechNum]} styles={this.props.style} ref={this.time}/>
+                    <Timer
+                        time={this.props.times[this.state.speechNum]} styles={this.props.style}
+                        socket={this.props.socket} isHost={this.props.isHost} room={this.props.room}
+                    />
                     {nextSpeechButton}
                 </View>
             </View>

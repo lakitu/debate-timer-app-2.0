@@ -51,6 +51,19 @@ export class Timer extends React.Component{
                 flash: !prevState.flash, // sets the flash variable every 0.5 seconds
             }))
         }, 500);
+        this.props.socket.on("new connection", () => {
+            const message = {
+                endTime: this.state.endTime,
+                isHost: this.props.isHost,
+                room: this.props.room,
+            }
+            this.props.socket.emit("end time", message);
+        });
+        this.props.socket.on("end time", (msg) => {
+            this.setState({
+                endTime: msg,
+            });
+        });
     }
 
     componentWillUnmount() {

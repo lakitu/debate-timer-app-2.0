@@ -44,5 +44,6 @@ export const upperBarStyles = StyleSheet.create({
         fontSize: 20,
         textAlign: 'right',
         padding: 5,
+        fontFamily: "RobotoMono"
     }
 })

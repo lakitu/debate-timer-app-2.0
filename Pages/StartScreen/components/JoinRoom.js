@@ -7,22 +7,26 @@ export class JoinRoom extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            text: '',
+            roomCode: '',
         }
     }
 
     textChange = (newText) => {
         this.setState({
-            text: newText,
+            roomCode: newText,
         })
     }
 
     join = () => {
-        this.props.submit(this.state.text, false);
+        this.props.submit(this.state.roomCode, false);
+        const msg = {
+            room: this.state.roomCode,
+        }
+        this.props.socket.emit("request end time", msg)
     }
 
     create = () => {
-        this.props.submit(this.state.text, true);
+        this.props.submit(this.state.roomCode, true);
         this.props.socket.emit("create room", null);
     }
 
