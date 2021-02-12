@@ -48,14 +48,12 @@ export default class App extends React.Component {
     // noinspection JSValidateTypes
     this.socket = io("ws://debate-app-server.herokuapp.com/");
     this.socket.on('connect', () => {
-      // console.log("socket connected")
     });
     this.socket.on("new room code", (code) => {
       this._isMounted && this.setState({
         room: code,
         inRoom: true,
       });
-      // console.log("room code: " + code);
     });
   }
 
@@ -73,11 +71,11 @@ export default class App extends React.Component {
   }
 
   setFormat = (newFormat) => {
-    console.log(newFormat);
     fetch(`https://debate-app-server.herokuapp.com/times/${newFormat.toLowerCase()}`)
         .then(json => json.json())
         .then(newTimes => {
           this.setState({
+            format: newFormat,
             times: newTimes.times,
             timesLoaded: true,
           })
@@ -102,7 +100,8 @@ export default class App extends React.Component {
           return (
               <TimerPage times={this.state.times} style={timerStyles}
                          isHost={this.state.host} room={this.state.room}
-                         socket={this.socket}/>
+                         socket={this.socket} setFormat={this.setFormat} format={this.state.format}
+              />
           )
         } // if times have been received by the client, send the timer page
       }

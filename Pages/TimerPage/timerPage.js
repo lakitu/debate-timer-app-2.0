@@ -50,7 +50,7 @@ export class TimerPage extends React.Component {
                 <View style={timerStyles.container}>
                     <Text style={timerStyles.speechName}>{this.state.speechName}</Text>
                     <Timer
-                        time={this.props.times[this.state.speechNum]} styles={this.props.style}
+                        time={this.props.times[this.state.speechNum]} styles={this.props.style} setFormat={this.props.setFormat}
                         socket={this.props.socket} isHost={this.props.isHost} room={this.props.room} format={this.props.format}
                     />
                     {nextSpeechButton}
