@@ -22,10 +22,6 @@ export const timerStyles = StyleSheet.create({
     continuing: {
         color: "green",
     },
-    nextSpeechButton: {
-        flex: 1,
-        color: "#2bc454",
-    },
     speechName: {
         fontSize: 40,
         fontWeight: 'bold',
@@ -45,5 +41,25 @@ export const upperBarStyles = StyleSheet.create({
         textAlign: 'right',
         padding: 5,
         fontFamily: "RobotoMono"
+    }
+})
+
+const buttonSize = 300;
+export const nextSpeechStyles = StyleSheet.create({
+    wrapperCustom: {
+        // flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+
+        borderRadius: buttonSize,
+        padding: 6,
+        width: buttonSize,
+        height: buttonSize,
+    },
+    innerText: {
+        fontSize: 40,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        color: 'rgb(40, 40, 40)'
     }
 })

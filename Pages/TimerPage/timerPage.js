@@ -1,7 +1,7 @@
 // this is the file that runs the timer and the next speech button
 import React from 'react'
 import {Timer} from './components/Timer'
-import {Next} from "./components/NextSpeechButton";
+import {NextSpeech} from "./components/NextSpeechButton";
 import {UpperBar} from "./components/UpperBar";
 import {View, Text} from "react-native";
 import {timerStyles} from "./styles";
@@ -40,7 +40,7 @@ export class TimerPage extends React.Component {
     }
 
     render() {
-        const nextSpeechButton = (this.props.isHost ? <Next nextSpeech={this.nextSpeech} style={timerStyles.nextSpeechButton}/> : null);
+        const nextSpeechButton = (this.props.isHost ? <NextSpeech nextSpeech={this.nextSpeech}/> : null);
 
         return (
             <View>
@@ -51,7 +51,7 @@ export class TimerPage extends React.Component {
                     <Text style={timerStyles.speechName}>{this.state.speechName}</Text>
                     <Timer
                         time={this.props.times[this.state.speechNum]} styles={this.props.style}
-                        socket={this.props.socket} isHost={this.props.isHost} room={this.props.room}
+                        socket={this.props.socket} isHost={this.props.isHost} room={this.props.room} format={this.props.format}
                     />
                     {nextSpeechButton}
                 </View>

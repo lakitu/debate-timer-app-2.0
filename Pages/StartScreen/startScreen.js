@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text} from 'react-native'
+import {SafeAreaView, Text} from 'react-native'
 import {JoinRoom} from "./components/JoinRoom";
 import {ChooseFormat} from "./components/ChooseFormat";
 import {startStyles} from "./styles";
@@ -40,24 +40,23 @@ export class StartScreen extends React.Component  {
     }
 
     renderDropdown() {
-        if (this.state.formatsLoaded)
-            return <ChooseFormat formats={this.state.formats} changeFormat={this.changeSelectedFormat} style={startStyles.dropdown}/>
-        else
-            return null;
+        let formats = this.state.formats;
+        if (!this.state.formatsLoaded) formats = [["loading", "load"]]
+        return <ChooseFormat formats={formats} changeFormat={this.changeSelectedFormat} style={startStyles.dropdown}/>
     }
 
     render() {
         let dropdown = this.renderDropdown();
 
         return (
-            <View style={startStyles.container}>
+            <SafeAreaView style={startStyles.container}>
                 <Text style={startStyles.title}>Live Debate Timer!</Text>
                 <JoinRoom
                     submit={this.joinRoom}
                     socket={this.props.socket}
                 />
                 {dropdown}
-            </View>
+            </SafeAreaView>
         )
     }
 }

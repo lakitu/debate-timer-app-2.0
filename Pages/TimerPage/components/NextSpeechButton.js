@@ -1,7 +1,9 @@
-import {Button, View} from "react-native";
+// import {Button, View} from "react-native";
+import {Pressable, Text, View} from "react-native"
 import React from 'react';
+import {nextSpeechStyles as style} from "../styles"
 
-export class Next extends React.Component {
+export class NextSpeech extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -9,11 +11,17 @@ export class Next extends React.Component {
     render() {
         return(
             <View>
-                <Button
+                <Pressable
                     onPress={this.props.nextSpeech} // when clicked, move to the next speech
-                    title="Next Speech"
-                    style={this.props.style.nextSpeechButton}
-                />
+                    style={({pressed}) => [
+                        {
+                            backgroundColor: (pressed ? 'lime' : 'deepskyblue')
+                        },
+                        style.wrapperCustom
+                    ]}
+                >
+                    <Text style={style.innerText}>Next Speech</Text>
+                </Pressable>
             </View>
         )
     }

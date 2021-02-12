@@ -89,7 +89,7 @@ export default class App extends React.Component {
       if (!this.state.inRoom) { // StartScreen
         return (
             <StartScreen
-                socket={this.socket}
+                socket={this.socket} format={this.state.format}
                 setRoom={this.joinRoom} setTimes={this.setFormat}
             />
         )

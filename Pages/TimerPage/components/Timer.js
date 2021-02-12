@@ -53,6 +53,7 @@ export class Timer extends React.Component{
         }, 500);
         this.props.socket.on("new connection", () => {
             const message = {
+                format: this.props.format,
                 endTime: this.state.endTime,
                 isHost: this.props.isHost,
                 room: this.props.room,
@@ -61,8 +62,9 @@ export class Timer extends React.Component{
         });
         this.props.socket.on("end time", (msg) => {
             this.setState({
-                endTime: msg,
+                endTime: msg.endTime,
             });
+            this.props.setFormat(msg.format);
         });
     }
 
