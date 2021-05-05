@@ -15,7 +15,6 @@ export class Timer extends React.Component{
             paused: this.props.paused,
             remaining: this.props.time[1]*60*1000,
         }
-        console.log(this.props.time[1]*60*1000)
     }
 
     timeToDisplay(millis) {
@@ -27,7 +26,6 @@ export class Timer extends React.Component{
             const tenths = Math.floor((millis / 100) % 10);
             return(minutes + ":" + displaySeconds + "." + tenths);
         } else { // if paused
-            console.log(this.state.remaining);
             const actualSeconds = this.state.remaining / 1000;
             const minutes = Math.floor(actualSeconds/60);
             const seconds = Math.floor(actualSeconds % 60);
@@ -84,13 +82,17 @@ export class Timer extends React.Component{
             });
         });
         this.props.socket.on("unpause", (msg) => {
-            console.log(`UNPAUSE:`)
-            console.log(msg);
             this.setState({
                 paused: false,
                 remaining: msg.time,
                 endTime: Date.now()+msg.time,
-            }, () => console.log(this.state))
+            });
+        });
+        this.props.socket.on("next", (msg) => {
+            this.setState({
+                remaining: msg.speechTime,
+                paused: true,
+            });
         });
     }
 

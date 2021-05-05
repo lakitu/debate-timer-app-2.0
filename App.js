@@ -1,6 +1,7 @@
 /* Requirements for Production
 *  TODO: Prep Timers
 *  TODO: Display format name
+*  TODO: Offline times
 *  TODO: Set up authentication for firebase
 * */
 
@@ -61,8 +62,6 @@ export default class App extends React.Component {
         this._isMounted && this.loadFonts();
         // noinspection JSValidateTypes
         this.socket = io("ws://debate-app-server.herokuapp.com/");
-        this.socket.on('connect', () => {
-        });
         this.socket.on("new room code", (code) => {
             this._isMounted && this.setState({
                 room: code,
@@ -74,9 +73,11 @@ export default class App extends React.Component {
             this.setState({paused: true});
         });
         this.socket.on("unpause", () => {
-            console.log("unpausing");
             this.setState({paused: false});
         });
+        this.socket.on("next", () => {
+            this.setState({paused: true,})
+        })
     }
 
     joinRoom = (roomCode, isHost) => {
@@ -96,7 +97,6 @@ export default class App extends React.Component {
         fetch(`https://debate-app-server.herokuapp.com/times/${newFormat.toLowerCase()}`)
             .then(json => json.json())
             .then(formatData => {
-                console.log(formatData);
                 this.setState({
                     formatData: formatData,
                     timesLoaded: true,

@@ -36,15 +36,14 @@ export class TimerPage extends React.Component {
                 speechNum: msg.newSpeech,
                 speechTime: msg.newSpeechTime,
                 speechName: msg.newSpeechName,
+                paused: true,
             });
         });
     }
 
     pause = () => {
         if (this.props.paused) {
-            console.log("pause");
             const remaining = this.timerRef.current.state.remaining; // send the amount of time remaining (paused time)
-            console.log("SENDING UNPAUSE");
             const msg = {
                 room: this.props.room,
                 time: remaining,
