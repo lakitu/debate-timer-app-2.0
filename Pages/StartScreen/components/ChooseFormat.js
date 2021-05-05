@@ -6,7 +6,6 @@ export function ChooseFormat (props) {
     const [selectedValue, setSelectedValue] = useState("loading");
 
     const changeValue = (itemValue) => {
-        console.log(itemValue);
         setSelectedValue(itemValue);
         props.changeFormat(itemValue);
     }

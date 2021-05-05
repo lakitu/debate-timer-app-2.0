@@ -46,15 +46,22 @@ export class StartScreen extends React.Component  {
     }
 
     render() {
-        let dropdown = this.renderDropdown();
+        const dropdown = this.renderDropdown();
+        let joinRoom = null;
+        if (this.state.formatsLoaded) {
+            joinRoom = <JoinRoom
+                setRoom={this.props.setRoom}
+                setTimes={() => {
+                    this.props.setTimes(this.state.selectedFormat)
+                }}
+                socket={this.props.socket}
+            />
+        }
 
         return (
             <SafeAreaView style={startStyles.container}>
                 <Text style={startStyles.title}>Live Debate Timer!</Text>
-                <JoinRoom
-                    submit={this.joinRoom}
-                    socket={this.props.socket}
-                />
+                {joinRoom}
                 {dropdown}
             </SafeAreaView>
         )

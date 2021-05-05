@@ -5,6 +5,7 @@ import {NextSpeech} from "./components/NextSpeechButton";
 import {UpperBar} from "./components/UpperBar";
 import {View, Text} from "react-native";
 import {timerStyles} from "./styles";
+import {PauseButton} from "./components/PauseButton";
 
 export class TimerPage extends React.Component {
 
@@ -13,8 +14,8 @@ export class TimerPage extends React.Component {
         this.state = {
             speechNum: 0,
             speechTime: 0,
-            speechName: this.props.times[0][0]
         }
+        this.timerRef = React.createRef();
     }
 
     nextSpeech = () => {
@@ -36,23 +37,44 @@ export class TimerPage extends React.Component {
                 speechTime: msg.newSpeechTime,
                 speechName: msg.newSpeechName,
             });
-        })
+        });
+    }
+
+    pause = () => {
+        if (this.props.paused) {
+            console.log("pause");
+            const remaining = this.timerRef.current.state.remaining; // send the amount of time remaining (paused time)
+            console.log("SENDING UNPAUSE");
+            const msg = {
+                room: this.props.room,
+                time: remaining,
+            } // room code and time remaining
+            this.props.socket.emit('unpause', msg);
+        } else { // unpausing
+            const remaining = this.timerRef.current.state.endTime - Date.now(); // calculate the remaining time
+            const msg = {
+                room: this.props.room,
+                time: remaining,
+            } // room code and time remaining (same as above)
+            this.props.socket.emit("pause", msg)
+        }
     }
 
     render() {
         const nextSpeechButton = (this.props.isHost ? <NextSpeech nextSpeech={this.nextSpeech}/> : null);
-
+        const pauseButton = (this.props.isHost ? <PauseButton paused={this.props.paused} pause={this.pause}/>: null);
         return (
-            <View>
+            <View style={{marginTop: 1,}}>
                 <View>
                     <UpperBar room={this.props.room} />
                 </View>
                 <View style={timerStyles.container}>
-                    <Text style={timerStyles.speechName}>{this.state.speechName}</Text>
+                    <Text style={timerStyles.speechName}>{this.props.times[this.state.speechNum][0]}</Text>
                     <Timer
-                        time={this.props.times[this.state.speechNum]} styles={this.props.style} setFormat={this.props.setFormat}
-                        socket={this.props.socket} isHost={this.props.isHost} room={this.props.room} format={this.props.format}
+                        time={this.props.times[this.state.speechNum]} setFormat={this.props.setFormat} paused={this.props.paused} ref={this.timerRef}
+                        socket={this.props.socket} isHost={this.props.isHost} room={this.props.room} formatData={this.props.formatData}
                     />
+                    {pauseButton}
                     {nextSpeechButton}
                 </View>
             </View>

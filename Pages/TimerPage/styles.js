@@ -44,17 +44,18 @@ export const upperBarStyles = StyleSheet.create({
     }
 })
 
-const buttonSize = 300;
-export const nextSpeechStyles = StyleSheet.create({
+const buttonSize = 200;
+export const speechButtons = StyleSheet.create({
     wrapperCustom: {
         // flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
 
-        borderRadius: buttonSize,
+        // borderRadius: buttonSize,
         padding: 6,
         width: buttonSize,
-        height: buttonSize,
+        height: buttonSize*0.75,
+        margin: buttonSize/10,
     },
     innerText: {
         fontSize: 40,
