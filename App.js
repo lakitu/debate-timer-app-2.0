@@ -1,6 +1,6 @@
 /* Requirements for Production
 *  TODO: Prep Timers
-*  TODO: Display format name
+*  TODO: Easily share room code
 *  TODO: Offline times
 *  TODO: Set up authentication for firebase
 * */
@@ -11,6 +11,19 @@ import {StartScreen} from "./Pages/StartScreen/StartScreen";
 import {loadAsync, FontDisplay} from "expo-font";
 import io from "socket.io-client";
 import {registerRootComponent} from "expo";
+//region Firebase Imports
+import firebase from 'firebase/app';
+const firebaseConfig = {
+    apiKey: "AIzaSyBkTDE1G6uNZ--DPdI2PnGbez5Q3KqkpdA",
+    authDomain: "debate-timer-backend.firebaseapp.com",
+    projectId: "debate-timer-backend",
+    storageBucket: "debate-timer-backend.appspot.com",
+    messagingSenderId: "47969277947",
+    appId: "1:47969277947:web:8ad910238718c08fa99d5e",
+    measurementId: "G-1EEJVY9E3G"
+};
+firebase.initializeApp(firebaseConfig);
+// endregion
 
 
 export default class App extends React.Component {
@@ -26,7 +39,6 @@ export default class App extends React.Component {
             },
             times: [["Loading", 0]],
         }
-
         this.state = {
             host: true,
             room: "",
@@ -36,6 +48,7 @@ export default class App extends React.Component {
             formatData: formatDataTemplate,
             paused: true,
         }
+
         this._isMounted = false;
     }
 
@@ -70,14 +83,14 @@ export default class App extends React.Component {
             });
         });
         this.socket.on("pause", () => {
-            this.setState({paused: true});
+            this._isMounted && this.setState({paused: true});
         });
         this.socket.on("unpause", () => {
-            this.setState({paused: false});
+            this._isMounted && this.setState({paused: false});
         });
         this.socket.on("next", () => {
-            this.setState({paused: true,})
-        })
+            this._isMounted && this.setState({paused: true,})
+        });
     }
 
     joinRoom = (roomCode, isHost) => {
@@ -90,7 +103,7 @@ export default class App extends React.Component {
             this.socket.emit("join", roomCode);
         }
         this.socket.on("joined", () => {
-        })
+        });
     }
 
     setTimes = (newFormat) => {

@@ -7,6 +7,12 @@ export const startStyles = StyleSheet.create({
         justifyContent: 'center',
         width: '100%',
     },
+    lightContainer: {
+        backgroundColor: '#d0d0c0'
+    },
+    darkContainer: {
+        backgroundColor: '#242c40'
+    },
     title: {
         fontFamily: "RobotoMono",
         fontSize: 30,
@@ -20,8 +26,6 @@ export const startStyles = StyleSheet.create({
         padding: 5,
         marginBottom: 5,
     },
-    submitButton: {
-    },
     separator: {
         marginVertical: 12,
         borderBottomColor: '#737373',
@@ -31,5 +35,7 @@ export const startStyles = StyleSheet.create({
         margin: 5,
         width: 350,
         height: 50,
-    }
+    },
+    submitButton: {
+    },
 })

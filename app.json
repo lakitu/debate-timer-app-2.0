@@ -1,10 +1,11 @@
 {
   "expo": {
-    "name": "debate-app-managed",
-    "slug": "debate-app-managed",
+    "name": "Debate Live Timer",
+    "slug": "debate-live-timer",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -27,6 +28,8 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": "",
+    "githubUrl": "https://github.com/lakitu/debate-timer-app-2.0"
   }
 }

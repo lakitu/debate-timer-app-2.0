@@ -6,9 +6,9 @@ import {UpperBar} from "./components/UpperBar";
 import {View, Text} from "react-native";
 import {timerStyles} from "./styles";
 import {PauseButton} from "./components/PauseButton";
+import {activateKeepAwake} from "expo-keep-awake";
 
 export class TimerPage extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -31,6 +31,7 @@ export class TimerPage extends React.Component {
     }
 
     componentDidMount() {
+        activateKeepAwake();
         this.props.socket.on("next", (msg) => {
             this.setState({
                 speechNum: msg.newSpeech,
@@ -63,12 +64,13 @@ export class TimerPage extends React.Component {
         const nextSpeechButton = (this.props.isHost ? <NextSpeech nextSpeech={this.nextSpeech}/> : null);
         const pauseButton = (this.props.isHost ? <PauseButton paused={this.props.paused} pause={this.pause}/>: null);
         return (
-            <View style={{marginTop: 1,}}>
+            <View style={{marginTop: 1}}>
                 <View>
                     <UpperBar room={this.props.room} />
                 </View>
                 <View style={timerStyles.container}>
-                    <Text style={timerStyles.speechName}>{this.props.times[this.state.speechNum][0]}</Text>
+                    <Text style={[timerStyles.speechName, {fontSize: 30}]}>{this.props.formatData.format}</Text>
+                    <Text style={[timerStyles.speechName, {fontSize: 40}]}> {this.props.times[this.state.speechNum][0]} </Text>
                     <Timer
                         time={this.props.times[this.state.speechNum]} setFormat={this.props.setFormat} paused={this.props.paused} ref={this.timerRef}
                         socket={this.props.socket} isHost={this.props.isHost} room={this.props.room} formatData={this.props.formatData}

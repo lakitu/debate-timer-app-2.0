@@ -57,7 +57,6 @@ export class StartScreen extends React.Component  {
                 socket={this.props.socket}
             />
         }
-
         return (
             <SafeAreaView style={startStyles.container}>
                 <Text style={startStyles.title}>Live Debate Timer!</Text>

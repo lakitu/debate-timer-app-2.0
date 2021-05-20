@@ -2,11 +2,11 @@ import {StyleSheet} from "react-native";
 
 export const timerStyles = StyleSheet.create({
     container: {
-        // flex: 1,
-        // backgroundColor: '#fff',
-        // marginTop: '50%',
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    lightContainer: {
+        backgroundColor: '#d0d0c0',
     },
     count: {
         fontSize: 50,
@@ -23,17 +23,16 @@ export const timerStyles = StyleSheet.create({
         color: "green",
     },
     speechName: {
-        fontSize: 40,
+        // fontSize: 40,
         fontWeight: 'bold',
+        textAlign: "center",
     }
 })
 
 export const upperBarStyles = StyleSheet.create({
     container: {
         backgroundColor: '#2196F3',
-        // padding: 50,
-        // paddingBottom: 10,
-        marginBottom: 100,
+        marginBottom: 20,
     },
     rightText: {
         color: 'white',
